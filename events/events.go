@@ -48,6 +48,7 @@ type EventEmitter struct {
 	handlerList map[string][]interface{}
 }
 
+// NewEventEmitter creates an pointer to a new instance of EventEmitter.
 func NewEventEmitter() *EventEmitter {
 	eventEmitter := EventEmitter{}
 	eventEmitter.handlerList = make(map[string][]interface{})
@@ -55,14 +56,17 @@ func NewEventEmitter() *EventEmitter {
 	return &eventEmitter
 }
 
+// On add a handler on an event, and it will be called every time the event got triggered.
 func (emitter *EventEmitter) On(eventName string, handler interface{}) {
 	emitter.AddListener(eventTypeOn, eventName, handler)
 }
 
+// Once add a handler on an event, and it will be called only the first time the event got triggerd.
 func (emitter *EventEmitter) Once(eventName string, handler interface{}) {
 	emitter.AddListener(eventTypeOnce, eventName, handler)
 }
 
+// AddListener provides a way to add listener on an event, and by different emit type the handler will be called only once or every time.
 func (emitter *EventEmitter) AddListener(emitType string, eventName string, handler interface{}) {
 	emitType = strings.ToUpper(emitType)
 	if !includesString(availableEmitTypes, emitType) {
